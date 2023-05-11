@@ -2328,7 +2328,7 @@ static unsigned zlib_compress(unsigned char** out, size_t* outsize, const unsign
 void lodepng_compress_settings_init(LodePNGCompressSettings* settings) {
   /*compress with dynamic huffman tree (not in the mathematical sense, just not the predefined one)*/
   settings->btype = 2;
-  settings->use_lz77 = 1;
+  settings->use_lz77 = 0;
   settings->windowsize = DEFAULT_WINDOWSIZE;
   settings->minmatch = 3;
   settings->nicematch = 128;
