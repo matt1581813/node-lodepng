@@ -17,3 +17,11 @@ exports.encode = function encode (source) {
 exports.decode = function decode (source) {
   return api.decode(source).then((result) => new ImageData(new Uint8ClampedArray(result.data), result.width, result.height))
 }
+
+exports.encodeSync = function encode (source) {
+  return api.encodeSync(toByteArray(source.data), source.width, source.height)
+}
+
+exports.decodeSync = function encode (source) {
+  return api.decodeSync(source)
+}

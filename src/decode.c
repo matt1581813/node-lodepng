@@ -83,3 +83,42 @@ napi_value decode(napi_env env, napi_callback_info info) {
 
   return promise;
 }
+
+
+napi_value decodeSync(napi_env env, napi_callback_info info) {
+    size_t argc = 3;
+    napi_value args[3];
+    assert(napi_get_cb_info(env, info, &argc, args, NULL, NULL) == napi_ok);
+
+    DecodeData* data = malloc(sizeof(DecodeData));
+    assert(napi_get_typedarray_info(env, args[0], NULL, &data->inputLength, (void**)&data->input, NULL, NULL) == napi_ok);
+ 
+    data->error = lodepng_decode32(&data->output, &data->width, &data->height, data->input, data->inputLength);
+
+    napi_value result;
+    assert(napi_create_object(env, &result) == napi_ok);
+
+    napi_value width;
+    assert(napi_create_uint32(env, data->width, &width) == napi_ok);
+    assert(napi_set_named_property(env, result, "width", width) == napi_ok);
+
+    napi_value height;
+    assert(napi_create_uint32(env, data->height, &height) == napi_ok);
+    assert(napi_set_named_property(env, result, "height", height) == napi_ok);
+
+    napi_value buffer;
+
+    napi_create_buffer_copy(env, data->width * data->height * 4, data->output, NULL, &buffer);
+
+    free(data->output);
+
+    free(data);
+
+  
+
+    assert(napi_set_named_property(env, result, "data", buffer) == napi_ok);
+
+  
+
+    return result;
+}

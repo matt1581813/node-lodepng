@@ -5,5 +5,8 @@
 #include <node_api.h>
 
 napi_value decode(napi_env env, napi_callback_info info);
+napi_value decodeSync(napi_env env, napi_callback_info info);
+
+
 
 #endif
